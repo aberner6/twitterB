@@ -131,11 +131,10 @@ void setup() {
 
   smooth();
   frameRate(120); //not 60
-  font= loadFont("WhitneyHTF-Book-18.vlw");
-  font2 = loadFont("WhitneyHTF-Book-24.vlw");
-  font3 = loadFont("WhitneyHTF-Book-30.vlw");
+  font = loadFont("GeosansLight-14.vlw");
+  font2 = loadFont("GeosansLight-48.vlw");
 
-  textFont(font, fontSize);
+//  textFont(font, fontSize);
   // textFont(font2, fontSize);
   //  header = new Header();
 
@@ -249,20 +248,28 @@ void draw() {
   if (globalTime >1) globalTime = 0;
 
   for (int i = 1; i< articles.length; i++) {
-    if (articles[i] != null) {
-      articles[i].prep();
-      articles[i].update();
-      articles[i].render();
+    if (articles[i] != null){
+     if (!a) {
+//     articles[i].font = ("GeosansLight-14.vlw");
+      articles[i].fontSize = 14;
+        articles[i].prep();
+        articles[i].update();
+        articles[i].render();
+    }
+    if (a){
+//     articles[i].font = ("GeosansLight-48.vlw"); //GeosansLight-14
+        articles[i].prep();
+        articles[i].update();
+        articles[i].render();
     }
   }
-  println (frameCount);
+}
 }
 
 void show () {  
   h = true;
   for (int i = 1; i< articles.length; i++) {
     if (articles[i] != null) {
-
       strokeWeight(weightStroke);
 
       float turnBy = map (random(width), 0, width, 0, TWO_PI)-HALF_PI; //hours+norm(articles[i].minutes, 0, 60)
@@ -290,8 +297,8 @@ void bringback() {
   j = false;
   for (int i = 0; i< 100; i++) {
     if (articles[i] != null) {
-  articles[i].tpos.x = 10;
-  articles[i].tpos.y = 10;
+      articles[i].tpos.x = 10;
+      articles[i].tpos.y = 10;
     }
   }
   for (int i = 100; i< 200; i++) {
@@ -313,7 +320,25 @@ void scatter() {
 }
 void highlight() {
   a = true;
+  for (int i = 1; i< articles.length; i++) {
+    if (articles[i] != null) 
+    if (articles[i].section.contains("@Fact")) {
+      articles[i].hourly = 0;
+      String wordIs = articles[i].section;
+      println (wordIs);
+      articles[i].section = wordIs;
+//      articles[i].font = font2; //GeosansLight-14
+      articles[i].fontSize = 48;
+      articles[i].tpos.x = width/4;
+      articles[i].tpos.y = map (i, 0, articles.length, 10, height-10) ;
+    }
+    else {
+   articles[i].fontSize = 14;
+     
+    }
+  }
 }
+
 
 void backtoall() {
   a=false;
@@ -327,11 +352,11 @@ void backtoall() {
 void keyPressed() {
   if (key=='h') show();
   if (key=='j') bringin();
-  if (key=='t')highlight();
   if (key=='k')bringback();
   if (key == 's') scatter();
+  if (key=='a')highlight();
+  if (key=='b')backtoall();
   //  if (key=='l') lineUp2();
-  //  if (key=='b')backtoall();
   //  if (key=='m')maskout();
   //  if (key=='o') amoeba();
   //if (key=='r') unmask();
