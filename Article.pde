@@ -43,7 +43,9 @@ class Article {
   float hourly;
 int fontSize;
 //String font;
-
+String mind;
+String brain;
+String neuro;
   boolean hover = false;
 
   Article() {

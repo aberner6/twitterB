@@ -27,9 +27,6 @@ String apes;
 
 Article [] articles;
 
-int[] wordCount = new int [numincsv];
-
-String desks;
 String[] sectiond;
 
 int maxW;
@@ -59,32 +56,9 @@ int pad = 1;
 //int deskWidth = width/deskOrder.length;
 
 int cx, cy;
-float hourly1;
-int save1count;
 boolean highlighting = false;
 
-boolean b = false; 
-boolean c = false;
-boolean d = false;
-boolean e = false;
-boolean f = false;
-boolean g = false;
-boolean z = false;
-boolean j = false;
-
-boolean r = false; //for unmasking
-boolean m = false; //for masking
-boolean h = false; //for titles
-boolean l = false; //switch titles to line up view
-
-int maxSects;
-int maxSectsIndex;
-String kingsect;
-String ckingsect;
-int sect1num;
-
-boolean a = false;
-boolean s = false;
+boolean b,m,r,c,d,e,f,g,z,j,h,l,a,s = false; 
 //import japplemenubar.JAppleMenuBar;
 
 //______________
@@ -102,13 +76,10 @@ Date[]timeArray = new Date[numincsv];
 long[]diffArray = new long[numincsv];
 long[]diffinArray = new long[numincsv];
 int numcircles = 35;
-float[] radii = new float[numincsv];
 float circlespacing = 0;
 ArrayList countingit;
 int storeArray[]=new int[numincsv];
 int[] articleCount = new int [numcircles];
-int[] offset = new int[numcircles];
-int thingis;
 
 int radiv = 5;
 int buffer = radiv*13; //FOR 0TH CIRCLE
@@ -134,7 +105,7 @@ void setup() {
   font = loadFont("GeosansLight-14.vlw");
   font2 = loadFont("GeosansLight-48.vlw");
 
-//  textFont(font, fontSize);
+  //  textFont(font, fontSize);
   // textFont(font2, fontSize);
   //  header = new Header();
 
@@ -162,6 +133,9 @@ void parse(String[]dates) {
       if (pieces.length >= 1) {
         Article article = new Article();
         article.section = pieces[0];
+//        article.mind = pieces[1];
+//        article.brain = pieces[2];
+//        article.neuro = pieces[3];
         String sectiond = article.section;
         //get date, parse and send to article object
         //        String dateString = pieces[0];
@@ -185,7 +159,7 @@ void parse(String[]dates) {
       }
     }
     catch(Exception e) {
-      println("error parsing this: " + pieces[2]);
+      println("error parsing this: " + pieces[1]);
     }
   }
   ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -194,7 +168,7 @@ void parse(String[]dates) {
   //  long diff = timeArray[500].getTime() - timeArray[1].getTime();
   //  println("Difference In Days: " + (diff / (1000 * 60 * 60 * 24)));
   ////////////////////////////////////////////////////////////////////////////////////////////////
-  String thing = articles[100].section;
+  String thing = articles[10].section;
   println (thing+" ---- ");
   //println (save1+"save1");
   println("number of articles: " + articles.length);
@@ -248,22 +222,22 @@ void draw() {
   if (globalTime >1) globalTime = 0;
 
   for (int i = 1; i< articles.length; i++) {
-    if (articles[i] != null){
-     if (!a) {
-//     articles[i].font = ("GeosansLight-14.vlw");
-      articles[i].fontSize = 14;
+    if (articles[i] != null) {
+      if (!a) {
+        //     articles[i].font = ("GeosansLight-14.vlw");
+        articles[i].fontSize = 14;
         articles[i].prep();
         articles[i].update();
         articles[i].render();
-    }
-    if (a){
-//     articles[i].font = ("GeosansLight-48.vlw"); //GeosansLight-14
+      }
+      if (a) {
+        //     articles[i].font = ("GeosansLight-48.vlw"); //GeosansLight-14
         articles[i].prep();
         articles[i].update();
         articles[i].render();
+      }
     }
   }
-}
 }
 
 void show () {  
@@ -272,14 +246,14 @@ void show () {
     if (articles[i] != null) {
       strokeWeight(weightStroke);
 
-      float turnBy = map (random(width), 0, width, 0, TWO_PI)-HALF_PI; //hours+norm(articles[i].minutes, 0, 60)
+      float turnBy = map (i, 0, width/2, 0, TWO_PI)-HALF_PI; //hours+norm(articles[i].minutes, 0, 60)
       articles[i].hourly = turnBy;
 
       articles[i].cx = 0; //width/(diffdays);//+radii[z]+spacing;    //(diffdays)+radii[z]+spacing; //circlespacing+
       articles[i].cy = 0;
 
-      articles[i].tpos.x = (i%10)*80;
-      articles[i].tpos.y = floor(i/10)*80;
+      articles[i].tpos.x = 10;
+      articles[i].tpos.y = map (i, 0, articles.length, 1, height*4);
     }
   }
 }
@@ -297,8 +271,11 @@ void bringback() {
   j = false;
   for (int i = 0; i< 100; i++) {
     if (articles[i] != null) {
-      articles[i].tpos.x = 10;
-      articles[i].tpos.y = 10;
+      articles[i].tpos.x = 1;
+      //      articles[i].tpos.y = 10;
+      float turnBy = map (i, 0, width/2, 0, TWO_PI)-HALF_PI; //hours+norm(articles[i].minutes, 0, 60)
+      articles[i].hourly = turnBy;
+      articles[i].tpos.y = map (i, 100, 200, 10, height*2) ;
     }
   }
   for (int i = 100; i< 200; i++) {
@@ -322,23 +299,35 @@ void highlight() {
   a = true;
   for (int i = 1; i< articles.length; i++) {
     if (articles[i] != null) 
-    if (articles[i].section.contains("@Fact")) {
-      articles[i].hourly = 0;
-      String wordIs = articles[i].section;
-      println (wordIs);
-      articles[i].section = wordIs;
-//      articles[i].font = font2; //GeosansLight-14
-      articles[i].fontSize = 48;
-      articles[i].tpos.x = width/4;
-      articles[i].tpos.y = map (i, 0, articles.length, 10, height-10) ;
-    }
-    else {
-   articles[i].fontSize = 14;
-     
-    }
+      if (articles[i].section.contains("Fact")) {
+        articles[i].hourly = 0;
+        String wordIs = articles[i].section;
+        println (wordIs);
+        if (wordIs!=wordIs) {
+          articles[i].section = wordIs;
+        }
+
+        //      articles[i].font = font2; //GeosansLight-14
+        articles[i].fontSize = 30;
+        articles[i].tpos.x = 10;
+        articles[i].tpos.y = map (i, 0, articles.length, 10, height*4) ;
+      }
+      else {
+        articles[i].fontSize = 14;
+      }
   }
 }
 
+void mind(){
+ a=false;
+ m=true;
+}
+
+void brain(){
+  a=false;
+  m=false;
+  
+}
 
 void backtoall() {
   a=false;
@@ -356,7 +345,8 @@ void keyPressed() {
   if (key == 's') scatter();
   if (key=='a')highlight();
   if (key=='b')backtoall();
-  //  if (key=='l') lineUp2();
+  if (key=='m') mind(); 
+  if (key=='r') brain();
   //  if (key=='m')maskout();
   //  if (key=='o') amoeba();
   //if (key=='r') unmask();
