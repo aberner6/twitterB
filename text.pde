@@ -2,10 +2,16 @@
 //import codeanticode.glgraphics.*;
 //import japplemenubar.*;
 //TO PLAY WITH THE VIZ:
-//"h" gives the radial
-//"l" will unfurl the radial into a line up, flattened comparison view
-//"d" gives sectioned out view
-//make sure to update the "if" equals... sparse or shmarse etc...
+//void keyPressed() {
+//  if (key=='h') show();
+//  if (key=='j') bringin();
+//  if (key=='k')bringback();
+//  if (key == 's') scatter();
+//  if (key=='a')highlight();
+//  if (key=='b')backtoall();
+//  if (key=='m') mind(); 
+//  if (key=='r') brain();
+//}
 
 
 //import japplemenubar.JAppleMenuBar;
@@ -25,7 +31,7 @@ int spacing = 11;
 String pieces;
 String apes;
 
-Article [] articles;
+Tweet [] tweets;
 
 String[] sectiond;
 
@@ -79,7 +85,7 @@ int numcircles = 35;
 float circlespacing = 0;
 ArrayList countingit;
 int storeArray[]=new int[numincsv];
-int[] articleCount = new int [numcircles];
+int[] tweetCount = new int [numcircles];
 
 int radiv = 5;
 int buffer = radiv*13; //FOR 0TH CIRCLE
@@ -96,7 +102,7 @@ void setup() {
   size(thiswidth, thisheight); //size(1500, 750); //100
   //size(6400, 720); //not 6400
   colorMode(HSB, 360, 100, 100);
-  background(0); //100);
+  background(200,100); //100);
   //  if (PApplet.platform == PConstants.MACOSX)
   //    new JAppleMenuBar().setVisible( false );
 
@@ -114,7 +120,7 @@ void setup() {
   minutes_of_date= new SimpleDateFormat("mm");
   day_of_date = new SimpleDateFormat ("dd");
   format = new SimpleDateFormat("MM/dd/yyyy");
-  articles = new Article[numincsv]; //have to declare length?DO I HAVE TOOOOOOOOOOOOOOOOOO
+  tweets = new Tweet[numincsv]; //have to declare length?DO I HAVE TOOOOOOOOOOOOOOOOOO
   String[] dates = loadStrings ("allresponses.csv");
   parse(dates);
   //  shmarse(sectiond);
@@ -127,35 +133,35 @@ void parse(String[]dates) {
   int dayisIndex = -1;
   int offsetIndex = -1;
   //String dateString = 
-  for (int i = 1; i<articles.length; i++) {
+  for (int i = 1; i<tweets.length; i++) {
     String[] pieces = splitLine(dates[i]);
     try {
       if (pieces.length >= 1) {
-        Article article = new Article();
-        article.section = pieces[0];
-//        article.mind = pieces[1];
-//        article.brain = pieces[2];
-//        article.neuro = pieces[3];
-        String sectiond = article.section;
-        //get date, parse and send to article object
+        Tweet tweet = new Tweet();
+        tweet.section = pieces[0];
+//        tweet.mind = pieces[1];
+//        tweet.brain = pieces[2];
+//        tweet.neuro = pieces[3];
+        String sectiond = tweet.section;
+        //get date, parse and send to tweet object
         //        String dateString = pieces[0];
-        //        article.timeStamp = sdf.parse(dateString);
-        //        article.datey = dateString;
+        //        tweet.timeStamp = sdf.parse(dateString);
+        //        tweet.datey = dateString;
         ////////////////////////////////////////////////////////////////////////////////////////////////
         //        timeArray[i] = format.parse(dateString);
 
         //        diffArray[i] = (timeArray[i].getTime()-timeArray[1].getTime())/(1000 * 60 * 60 * 24);
         //        diffinArray[i] = (timeArray[i].getTime())/(1000 * 60 * 60 * 24);
-        //        articleCount[(int) diffArray[i]]++;
+        //        tweetCount[(int) diffArray[i]]++;
 
         ////////////////////////////////////////////////////////////////////////////////////////////////
 
-        //        article.hours = int (hours_of_date.format(article.timeStamp));
-        //        article.minutes = int(minutes_of_date.format(article.timeStamp));
+        //        tweet.hours = int (hours_of_date.format(tweet.timeStamp));
+        //        tweet.minutes = int(minutes_of_date.format(tweet.timeStamp));
 
-        //        article.dayis = int (day_of_date.format(article.timeStamp));
-        // println (article.dayis);
-        articles[i]=article;
+        //        tweet.dayis = int (day_of_date.format(tweet.timeStamp));
+        // println (tweet.dayis);
+        tweets[i]=tweet;
       }
     }
     catch(Exception e) {
@@ -168,10 +174,10 @@ void parse(String[]dates) {
   //  long diff = timeArray[500].getTime() - timeArray[1].getTime();
   //  println("Difference In Days: " + (diff / (1000 * 60 * 60 * 24)));
   ////////////////////////////////////////////////////////////////////////////////////////////////
-  String thing = articles[10].section;
+  String thing = tweets[10].section;
   println (thing+" ---- ");
   //println (save1+"save1");
-  println("number of articles: " + articles.length);
+  println("number of tweets: " + tweets.length);
 }
 
 String[] splitLine(String line) {
@@ -214,27 +220,27 @@ String[] splitLine(String line) {
 }
 
 void draw() {
-  background(0); //, 100);
+  background(255,100); //, 100);
   if (frameCount == 1)
     frame.setLocation(0, 0); //only need to be called on first draw frame
   //background(255, 100);
   globalTime += timeSpeed;
   if (globalTime >1) globalTime = 0;
 
-  for (int i = 1; i< articles.length; i++) {
-    if (articles[i] != null) {
+  for (int i = 1; i< tweets.length; i++) {
+    if (tweets[i] != null) {
       if (!a) {
-        //     articles[i].font = ("GeosansLight-14.vlw");
-        articles[i].fontSize = 14;
-        articles[i].prep();
-        articles[i].update();
-        articles[i].render();
+        //     tweets[i].font = ("GeosansLight-14.vlw");
+        tweets[i].fontSize = 14;
+        tweets[i].prep();
+        tweets[i].update();
+        tweets[i].render();
       }
       if (a) {
-        //     articles[i].font = ("GeosansLight-48.vlw"); //GeosansLight-14
-        articles[i].prep();
-        articles[i].update();
-        articles[i].render();
+        //     tweets[i].font = ("GeosansLight-48.vlw"); //GeosansLight-14
+        tweets[i].prep();
+        tweets[i].update();
+        tweets[i].render();
       }
     }
   }
@@ -242,78 +248,78 @@ void draw() {
 
 void show () {  
   h = true;
-  for (int i = 1; i< articles.length; i++) {
-    if (articles[i] != null) {
+  for (int i = 1; i< tweets.length; i++) {
+    if (tweets[i] != null) {
       strokeWeight(weightStroke);
 
-      float turnBy = map (i, 0, width/2, 0, TWO_PI)-HALF_PI; //hours+norm(articles[i].minutes, 0, 60)
-      articles[i].hourly = turnBy;
+      float turnBy = map (i, 0, width/2, 0, TWO_PI)-HALF_PI; //hours+norm(tweets[i].minutes, 0, 60)
+      tweets[i].hourly = turnBy;
 
-      articles[i].cx = 0; //width/(diffdays);//+radii[z]+spacing;    //(diffdays)+radii[z]+spacing; //circlespacing+
-      articles[i].cy = 0;
+      tweets[i].cx = 0; //width/(diffdays);//+radii[z]+spacing;    //(diffdays)+radii[z]+spacing; //circlespacing+
+      tweets[i].cy = 0;
 
-      articles[i].tpos.x = 10;
-      articles[i].tpos.y = map (i, 0, articles.length, 1, height*4);
+      tweets[i].tpos.x = 10;
+      tweets[i].tpos.y = map (i, 0, tweets.length, 1, height*4);
     }
   }
 }
 void bringin () {  
   j = true;
   for (int i = 1; i< 100; i++) {
-    if (articles[i] != null) {
-      articles[i].hourly = 0; //rotation
-      articles[i].tpos.x = 10;
-      articles[i].tpos.y = map (i, 0, 100, 10, height*2) ;
+    if (tweets[i] != null) {
+      tweets[i].hourly = 0; //rotation
+      tweets[i].tpos.x = 10;
+      tweets[i].tpos.y = map (i, 0, 100, 10, height*2) ;
     }
   }
 }
 void bringback() {
   j = false;
   for (int i = 0; i< 100; i++) {
-    if (articles[i] != null) {
-      articles[i].tpos.x = 1;
-      //      articles[i].tpos.y = 10;
-      float turnBy = map (i, 0, width/2, 0, TWO_PI)-HALF_PI; //hours+norm(articles[i].minutes, 0, 60)
-      articles[i].hourly = turnBy;
-      articles[i].tpos.y = map (i, 100, 200, 10, height*2) ;
+    if (tweets[i] != null) {
+      tweets[i].tpos.x = 1;
+      //      tweets[i].tpos.y = 10;
+      float turnBy = map (i, 0, width/2, 0, TWO_PI)-HALF_PI; //hours+norm(tweets[i].minutes, 0, 60)
+      tweets[i].hourly = turnBy;
+      tweets[i].tpos.y = map (i, 100, 200, 10, height*2) ;
     }
   }
   for (int i = 100; i< 200; i++) {
-    if (articles[i] != null) {
-      articles[i].hourly = 0; //rotation
-      articles[i].tpos.x = 10;
-      articles[i].tpos.y = map (i, 100, 200, 10, height*2) ;
+    if (tweets[i] != null) {
+      tweets[i].hourly = 0; //rotation
+      tweets[i].tpos.x = 10;
+      tweets[i].tpos.y = map (i, 100, 200, 10, height*2) ;
     }
   }
 }
 void scatter() {
   j = false;
-  for (int i = 1; i< articles.length; i++) {
-    if (articles[i] != null) {
-      articles[i].hourly = i; //rotation
-      articles[i].tpos.x += i/.1;
+  for (int i = 1; i< tweets.length; i++) {
+    if (tweets[i] != null) {
+      tweets[i].hourly = i; //rotation
+      tweets[i].tpos.x += i/.1;
     }
   }
 }
 void highlight() {
   a = true;
-  for (int i = 1; i< articles.length; i++) {
-    if (articles[i] != null) 
-      if (articles[i].section.contains("Fact")) {
-        articles[i].hourly = 0;
-        String wordIs = articles[i].section;
+  for (int i = 1; i< tweets.length; i++) {
+    if (tweets[i] != null) 
+      if (tweets[i].section.contains("Fact")) {
+        tweets[i].hourly = 0;
+        String wordIs = tweets[i].section;
         println (wordIs);
         if (wordIs!=wordIs) {
-          articles[i].section = wordIs;
+          tweets[i].section = wordIs;
         }
 
-        //      articles[i].font = font2; //GeosansLight-14
-        articles[i].fontSize = 30;
-        articles[i].tpos.x = 10;
-        articles[i].tpos.y = map (i, 0, articles.length, 10, height*4) ;
+        //      tweets[i].font = font2; //GeosansLight-14
+        tweets[i].fontSize = 30;
+        tweets[i].tpos.x = 10;
+        tweets[i].tpos.y = map (i, 0, tweets.length, 10, height*4) ;
       }
       else {
-        articles[i].fontSize = 14;
+        tweets[i].fontSize = 14;
       }
   }
 }
@@ -333,10 +339,6 @@ void backtoall() {
   a=false;
 }
 
-//void bringin() {
-//  j = true;
-//}
-
 
 void keyPressed() {
   if (key=='h') show();
@@ -347,18 +349,5 @@ void keyPressed() {
   if (key=='b')backtoall();
   if (key=='m') mind(); 
   if (key=='r') brain();
-  //  if (key=='m')maskout();
-  //  if (key=='o') amoeba();
-  //if (key=='r') unmask();
 }
-
-//void maskout() {
-//  m=true;
-//}
-//void unmask() {
-//  r=true;
-//}
-//void amoeba() {
-//  r=true;
-//}
 
